@@ -11,6 +11,10 @@ export default {
 			},
 		},
 		extend: {
+			fontFamily: {
+				inter: ["Inter", "sans-serif"],
+			},
+			colors: {},
 			container: {
 				center: true,
 				padding: "1.5rem",

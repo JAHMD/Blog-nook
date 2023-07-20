@@ -16,7 +16,7 @@ function App() {
 		<ClerkProvider publishableKey={clerkPublKey}>
 			<QueryClientProvider client={queryClient}>
 				<Navbar />
-				<main className="container">
+				<main className="min-h-[calc(100vh-88px)] relative">
 					<Outlet />
 				</main>
 				<footer></footer>

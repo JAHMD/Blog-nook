@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useUser } from "@clerk/clerk-react";
 import { Loader2 } from "lucide-react";
 import { nanoid } from "nanoid";

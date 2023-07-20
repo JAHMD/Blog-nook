@@ -1,17 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-	@apply bg-slate-900 text-white;
+	@apply bg-slate-900 text-white font-inter;
 }
 
 section {
-	padding-block: 2rem;
+	@apply container py-8;
 }
 
 form :is(input, textarea) {
 	@apply block tracking-wide w-full rounded-lg border-2 bg-transparent py-2 px-4 text-slate-900 placeholder:text-gray-400 focus:ring ring-gray-400 outline-transparent text-sm sm:text-base;
+}
+
+.loader {
+	display: block;
+	position: relative;
+	height: 32px;
+	width: 100px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.loader:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 4px;
+	width: 24px;
+	height: 24px;
+	animation: ballbns 2s ease-in infinite;
+}
+
+@keyframes ballbns {
+	0% {
+		left: 0;
+		transform: translateX(-100%) rotate(0deg);
+		border-radius: 0;
+		background: #fff;
+	}
+	100% {
+		left: 100%;
+		transform: translateX(0%) rotate(360deg);
+		border-radius: 50%;
+		background: #fff;
+	}
 }
 
 @layer components {
