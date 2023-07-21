@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/clerk-react";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
@@ -12,6 +13,12 @@ const clerkPublKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string;
 const queryClient = new QueryClient();
 
 function App() {
+	const location = useLocation();
+
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}, [location]);
+
 	return (
 		<ClerkProvider publishableKey={clerkPublKey}>
 			<QueryClientProvider client={queryClient}>

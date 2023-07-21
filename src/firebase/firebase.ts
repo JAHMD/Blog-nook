@@ -23,9 +23,15 @@ const db = getFirestore(app);
 
 export async function getBlogPosts() {
 	const blogCol = collection(db, "blog");
-	const blogSnap = await getDocs(blogCol);
-	const blogList = blogSnap.docs.map((doc) => doc.data());
-	return blogList;
+	try {
+		const blogSnap = await getDocs(blogCol);
+		if (!blogSnap.empty) {
+			const blogList = blogSnap.docs.map((doc) => doc.data());
+			return blogList;
+		}
+	} catch (err) {
+		if (err instanceof Error) console.log(err.message);
+	}
 }
 
 export async function addPostToBlog(post: BlogPostType) {

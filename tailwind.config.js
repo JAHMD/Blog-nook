@@ -11,10 +11,22 @@ export default {
 			},
 		},
 		extend: {
+			gridTemplateColumns: {
+				repeat: "repeat(auto-fill, minmax(400px, 1fr))",
+			},
 			fontFamily: {
 				inter: ["Inter", "sans-serif"],
 			},
-			colors: {},
+			colors: {
+				primary: {
+					light: "#EFFFFA",
+					dark: "#09211C",
+					border: "#B8E0D3",
+					text: "#002D1F",
+					category: "#B0FFE4",
+					card: "#FCFFFE",
+				},
+			},
 			container: {
 				center: true,
 				padding: "1.5rem",
