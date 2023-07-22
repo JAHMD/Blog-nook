@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import {
 	collection,
 	doc,
+	getDoc,
 	getDocs,
 	getFirestore,
 	setDoc,
@@ -33,6 +34,16 @@ export async function getBlogPosts() {
 		}
 	} catch (err) {
 		if (err instanceof Error) console.log(err.message);
+	}
+}
+
+export async function getSingleBlogPost(id: string) {
+	const ref = doc(db, "blog", id);
+	const docSnap = await getDoc(ref);
+	if (docSnap.exists()) {
+		// Convert to post object
+		const post = docSnap.data();
+		return post;
 	}
 }
 

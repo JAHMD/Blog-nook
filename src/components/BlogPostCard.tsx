@@ -1,16 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { BlogPostType } from "./NewPost";
 
-const BlogPostCard = ({
-	author,
-	authorImage,
-	body,
-	category,
-	createdAt,
-	id,
-	title,
-	postPictureURL,
-}: BlogPostType) => {
+type PropsType = {
+	post: BlogPostType;
+};
+
+const BlogPostCard = ({ post }: PropsType) => {
+	const {
+		author,
+		authorImage,
+		body,
+		category,
+		createdAt,
+		id,
+		title,
+		postPictureURL,
+	} = post;
+
 	return (
 		<article
 			key={id}
@@ -22,32 +28,29 @@ const BlogPostCard = ({
 					alt={postPictureURL}
 					loading="lazy"
 					height={286}
-					className="h-[240px] object-cover w-full"
+					className="h-[300px] object-cover w-full object-top"
 				/>
 			</div>
 
 			<div className="mx-4 flex items-center gap-x-4 text-xs border-b border-primary-border pb-4">
+				<p className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize">
+					{category}
+				</p>
 				<time dateTime={createdAt} className="text-primary-text">
 					{createdAt}
 				</time>
-				<Link
-					to={`/categories`}
-					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize hover:bg-primary-category/70 transition-colors"
-				>
-					{category}
-				</Link>
 			</div>
 
-			<div className="mx-4 ">
-				<h2 className="capitalize text-lg font-semibold leading-6">
-					<Link to={`/posts/${id}`}>{title}</Link>
+			<NavLink to={`/post/${id}`} state={{ post }} className="mx-4 block group">
+				<h2 className="capitalize text-lg font-semibold leading-6 group-hover:text-gray-600 transition-colors">
+					{title}
 				</h2>
-				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-dark">
+				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-dark group-hover:text-gray-600 transition-colors">
 					{body}
 				</p>
-			</div>
+			</NavLink>
 
-			<div className="mt-auto px-4 pb-4 relative flex items-center gap-x-4">
+			<div className="mt-auto px-4 pb-4 relative flex items-center gap-x-4 w-fit">
 				<img
 					src={authorImage}
 					alt="post's author image"
@@ -55,10 +58,10 @@ const BlogPostCard = ({
 				/>
 				<div className="text-sm leading-6">
 					<p className="font-semibold text-gray-900">
-						<a href={author}>
+						<Link to="/">
 							<span className="absolute inset-0" />
 							{author}
-						</a>
+						</Link>
 					</p>
 				</div>
 			</div>

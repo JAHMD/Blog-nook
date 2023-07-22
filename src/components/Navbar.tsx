@@ -1,11 +1,11 @@
-import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
 	const { isSignedIn, isLoaded } = useUser();
 
 	return (
-		<header className="bg-primary-light/80 sticky top-0 backdrop-blur-sm shadow-md z-10 text-[#001229] font-medium shadow-primary-dark/5">
+		<header className="bg-primary-light/90 sticky top-0 backdrop-blur-sm shadow-md z-10 text-[#001229] font-medium shadow-primary-dark/5">
 			<nav className="flex justify-between items-center container py-6 min-h-20">
 				<Link to="/">Blog nook</Link>
 				<ul className=" flex gap-6 items-center">
@@ -32,7 +32,7 @@ const Navbar = () => {
 								</NavLink>
 							</li> */}
 							<li>
-								<NavLink to="my-posts" className="link">
+								<NavLink to="user-posts" className="link">
 									My Posts
 								</NavLink>
 							</li>
@@ -43,11 +43,9 @@ const Navbar = () => {
 					{isLoaded && isSignedIn ? (
 						<UserButton />
 					) : (
-						<SignInButton>
-							<span className="btn rounded-full btn-primary cursor-pointer inline-block">
-								Sign in
-							</span>
-						</SignInButton>
+						<Link to="/sign-in" className="inline-block btn btn-primary">
+							Sign in
+						</Link>
 					)}
 				</div>
 			</nav>

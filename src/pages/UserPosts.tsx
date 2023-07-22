@@ -1,25 +1,14 @@
-import { useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Modal from "../components/Modal";
 import NewPost from "../components/NewPost";
 
-const MyPosts = () => {
-	const { user } = useUser();
-	const navigate = useNavigate();
-
+const UserPosts = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-	useEffect(() => {
-		if (!user) {
-			navigate("/");
-		}
-	}, []);
-
 	return (
-		<section>
+		<section className="container">
 			<div className="flex justify-between items-center border-b pb-6">
-				<h1 className="page-heading">My nook</h1>
+				<h1 className="page-heading">My posts</h1>
 				<button
 					className="btn btn-primary ml-auto"
 					onClick={() => setIsModalOpen((oldState) => !oldState)}
@@ -39,4 +28,4 @@ const MyPosts = () => {
 	);
 };
 
-export default MyPosts;
+export default UserPosts;
