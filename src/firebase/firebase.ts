@@ -6,6 +6,8 @@ import {
 	getFirestore,
 	setDoc,
 } from "firebase/firestore/lite";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 import { BlogPostType } from "../components/NewPost";
 
 const firebaseConfig = {
@@ -18,8 +20,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export async function getBlogPosts() {
 	const blogCol = collection(db, "blog");
@@ -34,6 +36,14 @@ export async function getBlogPosts() {
 	}
 }
 
-export async function addPostToBlog(post: BlogPostType) {
-	await setDoc(doc(db, "blog", post.id), post);
+export async function uploadPostToFirebase(post: BlogPostType) {
+	const { id } = post;
+	await setDoc(doc(db, "blog", id), post);
+}
+
+export async function handlePictureSetup(pictureFile: Blob, postId: string) {
+	const pictureRef = ref(storage, `images/${pictureFile.name}-${postId}`);
+	await uploadBytes(pictureRef, pictureFile);
+	const url = await getDownloadURL(pictureRef);
+	return url;
 }

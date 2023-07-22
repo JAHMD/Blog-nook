@@ -17,9 +17,8 @@ const BlogPage = () => {
 		<Suspense fallback={<PagesLoader />}>
 			<Await resolve={data}>
 				{(blogPosts: BlogPostType[]) => {
-					console.log(blogPosts);
 					return (
-						<section className="h-full">
+						<section className="h-full flex flex-col">
 							<div className="border-b border-primary-border pb-6">
 								<h1 className="page-heading capitalize">blog posts</h1>
 								<p className="mt-2 text-lg leading-8 text-text">
@@ -34,7 +33,7 @@ const BlogPage = () => {
 									))}
 								</div>
 							) : (
-								<p className="text-3xl text-center font-bold">
+								<p className="text-3xl text-center font-bold h-full">
 									No posts to show
 								</p>
 							)}

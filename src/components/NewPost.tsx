@@ -2,19 +2,25 @@
 import { useUser } from "@clerk/clerk-react";
 import { Image, Loader2 } from "lucide-react";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { addPostToBlog } from "../firebase/firebase";
+import { handlePictureSetup, uploadPostToFirebase } from "../firebase/firebase";
 
 type PropsType = {
 	closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type PictureFileType = {
+	[index: string]: string;
+	name: string;
 };
 
 type Inputs = {
 	title: string;
 	body: string;
 	category: string;
-	postImage: string;
+	picture: {
+		0: Blob;
+	};
 };
 
 export type BlogPostType = {
@@ -22,7 +28,7 @@ export type BlogPostType = {
 	title: string;
 	body: string;
 	category: string;
-	postImage: string;
+	postPictureURL: string;
 	author: string;
 	authorImage: string;
 	userId: string | undefined;
@@ -38,30 +44,25 @@ const NewPost = ({ closeModal }: PropsType) => {
 	} = useForm<Inputs>();
 
 	const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-		const { body, category, title, postImage } = formData;
-
-		//TODO: GET THE IMAGE TO UPLOAD IT WITH EACH POST
+		const { body, category, title, picture } = formData;
+		const postId = nanoid();
+		const url = await handlePictureSetup(picture[0], postId);
 
 		const post: BlogPostType = {
-			id: nanoid(),
+			id: postId,
 			body,
 			category,
 			title,
-			postImage:
-				"https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png",
+			postPictureURL: url,
 			author: user?.fullName || "Unknown user",
 			authorImage: user?.imageUrl || "",
 			userId: user?.id,
 			createdAt: new Date().toDateString(),
 		};
-		console.log(post);
-		await addPostToBlog(post);
+
+		await uploadPostToFirebase(post);
 		closeModal(false);
 	};
-
-	useEffect(() => {
-		document.addEventListener("click", (e) => console.log(e));
-	}, []);
 
 	return (
 		<form
@@ -86,6 +87,7 @@ const NewPost = ({ closeModal }: PropsType) => {
 				/>
 				{errors.title ? <p className="err">{errors.title.message}</p> : null}
 			</div>
+
 			<div className="field">
 				<label htmlFor="category" className="block font-medium tracking-wide">
 					Category
@@ -107,6 +109,7 @@ const NewPost = ({ closeModal }: PropsType) => {
 					<p className="err">{errors.category.message}</p>
 				) : null}
 			</div>
+
 			<div className="field">
 				<label htmlFor="body" className="block font-medium tracking-wide">
 					Post content
@@ -139,26 +142,19 @@ const NewPost = ({ closeModal }: PropsType) => {
 							<span className="font-semibold">Click to upload</span> or drag and
 							drop
 						</p>
-						<p className="text-xs text-gray-500">
-							SVG, PNG, JPG or GIF (MAX. 800x400px)
-						</p>
+						<p className="text-xs text-gray-500">SVG, PNG, JPG or GIF</p>
 					</div>
+
 					<input
+						{...register("picture", { required: "Post picture is required" })}
 						id="post-image"
 						type="file"
 						className="hidden"
 						accept=".jpg, .jpeg, .png"
-						{...register("postImage", {
-							required: { value: true, message: "Image is required" },
-							pattern: {
-								value: /^[w+]\.(gif|jpe?g|png)$/gi,
-								message: "It should be an image",
-							},
-						})}
 					/>
 				</label>
-				{errors.postImage ? (
-					<p className="err">{errors.postImage.message}</p>
+				{errors.picture ? (
+					<p className="err">{errors.picture.message}</p>
 				) : null}
 			</div>
 

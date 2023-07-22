@@ -9,7 +9,7 @@ const BlogPostCard = ({
 	createdAt,
 	id,
 	title,
-	postImage,
+	postPictureURL,
 }: BlogPostType) => {
 	return (
 		<article
@@ -17,7 +17,13 @@ const BlogPostCard = ({
 			className="flex flex-col gap-6 bg-primary-card rounded-lg shadow-md shadow-primary-dark/5"
 		>
 			<div className="rounded-lg overflow-hidden">
-				<img src={postImage} alt="post image" loading="lazy" height={286} />
+				<img
+					src={postPictureURL}
+					alt={postPictureURL}
+					loading="lazy"
+					height={286}
+					className="h-[240px] object-cover w-full"
+				/>
 			</div>
 
 			<div className="mx-4 flex items-center gap-x-4 text-xs border-b border-primary-border pb-4">
@@ -41,7 +47,7 @@ const BlogPostCard = ({
 				</p>
 			</div>
 
-			<div className="px-4 pb-4 relative flex items-center gap-x-4">
+			<div className="mt-auto px-4 pb-4 relative flex items-center gap-x-4">
 				<img
 					src={authorImage}
 					alt="post's author image"
