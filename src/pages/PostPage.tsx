@@ -6,9 +6,11 @@ import { getSingleBlogPost } from "../firebase/firebase";
 
 const PostPage = () => {
 	const { id: paramId } = useParams();
+
+	console.log(paramId);
 	const { isLoading, error, data } = useQuery({
 		queryKey: `post-${paramId!}`,
-		queryFn: async () => await getSingleBlogPost(paramId!),
+		queryFn: () => getSingleBlogPost(paramId!),
 	});
 
 	if (isLoading) {
@@ -22,6 +24,8 @@ const PostPage = () => {
 			</section>
 		);
 	}
+
+	console.log(data);
 
 	const {
 		author,

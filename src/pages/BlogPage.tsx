@@ -7,7 +7,7 @@ import { getBlogPosts } from "../firebase/firebase";
 const BlogPage = () => {
 	const { isLoading, error, data } = useQuery({
 		queryKey: "blog",
-		queryFn: async () => await getBlogPosts(),
+		queryFn: () => getBlogPosts(),
 	});
 
 	if (isLoading) {

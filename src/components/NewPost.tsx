@@ -3,7 +3,11 @@ import { useUser } from "@clerk/clerk-react";
 import { Image, Loader2 } from "lucide-react";
 import { nanoid } from "nanoid";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { handlePictureSetup, uploadPostToFirebase } from "../firebase/firebase";
+import {
+	handlePictureSetup,
+	uploadPostToFirebase,
+	uploadUserPosts,
+} from "../firebase/firebase";
 
 type PropsType = {
 	closeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,8 +39,16 @@ export type BlogPostType = {
 	createdAt: string;
 };
 
+export type UserDataType = {
+	id: string;
+	name: string;
+	imageURL: string;
+	posts: BlogPostType[];
+};
+
 const NewPost = ({ closeModal }: PropsType) => {
 	const { user } = useUser();
+
 	const {
 		register,
 		handleSubmit,
@@ -46,21 +58,30 @@ const NewPost = ({ closeModal }: PropsType) => {
 	const onSubmit: SubmitHandler<Inputs> = async (formData) => {
 		const { body, category, title, picture } = formData;
 		const postId = nanoid();
-		const url = await handlePictureSetup(picture[0], postId);
+		const pictureUrl = await handlePictureSetup(picture[0], postId);
 
 		const post: BlogPostType = {
 			id: postId,
 			body,
 			category,
 			title,
-			postPictureURL: url,
+			postPictureURL: pictureUrl,
 			author: user?.fullName || "Unknown user",
 			authorImage: user?.imageUrl || "",
 			userId: user?.id,
 			createdAt: new Date().toDateString(),
 		};
 
+		const userData = {
+			id: user?.id,
+			name: user?.fullName,
+			imageURL: user?.imageUrl,
+			posts: [],
+		} as UserDataType;
+
+		await uploadUserPosts(userData, post);
 		await uploadPostToFirebase(post);
+		location.reload();
 		closeModal(false);
 	};
 
@@ -134,7 +155,7 @@ const NewPost = ({ closeModal }: PropsType) => {
 				</label>
 				<label
 					htmlFor="post-image"
-					className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+					className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-primary-light hover:bg-primary-light/60 transition-colors"
 				>
 					<div className="flex flex-col items-center justify-center pt-5 pb-6">
 						<Image className="mx-auto h-8 w-8 stroke-gray-400 mb-4" />
@@ -158,12 +179,25 @@ const NewPost = ({ closeModal }: PropsType) => {
 				) : null}
 			</div>
 
-			<button
-				className="btn btn-primary w-full text-white disabled:bg-gray-600 disabled:cursor-not-allowed"
-				disabled={isSubmitting}
-			>
-				{isSubmitting ? <Loader2 className="mx-auto animate-spin" /> : "Submit"}
-			</button>
+			<div className="flex gap-6 w-full">
+				<button
+					type="button"
+					onClick={() => closeModal(false)}
+					className="btn btn-alt flex-1"
+				>
+					Close
+				</button>
+				<button
+					className="btn btn-primary flex-1 text-white disabled:bg-gray-600 disabled:cursor-not-allowed"
+					disabled={isSubmitting}
+				>
+					{isSubmitting ? (
+						<Loader2 className="mx-auto animate-spin" />
+					) : (
+						"Submit"
+					)}
+				</button>
+			</div>
 		</form>
 	);
 };
