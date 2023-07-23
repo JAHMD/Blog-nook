@@ -63,7 +63,7 @@ export async function uploadUserPosts(
 
 	if (docSnap.exists()) {
 		const data = docSnap.data() as UserDataType;
-		const updatedPosts = [...data.posts, newPost];
+		const updatedPosts = [newPost, ...data.posts];
 		await updateDoc(docRef, { ...data, posts: updatedPosts });
 	} else {
 		await setDoc(docRef, { ...user, posts: [newPost] });

@@ -34,7 +34,7 @@ const BlogPage = () => {
 			</div>
 
 			{posts?.length > 0 ? (
-				<div className="sm:grid grid-cols-repeat gap-x-8 gap-y-16 mt-16">
+				<div className="space-y-8 sm:space-y-0 sm:grid grid-cols-repeat gap-8 mt-16">
 					{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
 				</div>
 			) : (
