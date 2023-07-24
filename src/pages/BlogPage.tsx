@@ -5,26 +5,24 @@ import PagesLoader from "../components/PagesLoader";
 import { getBlogPosts } from "../firebase/firebase";
 
 const BlogPage = () => {
-	const { isLoading, error, data } = useQuery({
+	const { status, isFetching, error, data } = useQuery({
 		queryKey: "blog",
 		queryFn: () => getBlogPosts(),
 	});
 
-	if (isLoading) {
-		return <PagesLoader />;
-	}
-
-	if (error) {
+	if (error instanceof Error) {
 		return (
 			<section className="pt-0 container flex items-center justify-center">
-				<p>'An error has occurred: ' + error.message</p>;
+				<p>'An error has occurred: ' + {error.message}</p>;
 			</section>
 		);
 	}
 
 	const posts = (data || []) as BlogPostType[];
 
-	return (
+	return status === "loading" || isFetching ? (
+		<PagesLoader />
+	) : (
 		<section className="container flex flex-col">
 			<div className="border-b border-primary-border pb-6">
 				<h1 className="page-heading capitalize">blog posts</h1>

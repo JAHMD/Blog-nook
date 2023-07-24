@@ -1,4 +1,3 @@
-- add confimation to close the form 
 - set the home page
 - add delete and edit feature to user's posts
 - add commentting feature to user's posts

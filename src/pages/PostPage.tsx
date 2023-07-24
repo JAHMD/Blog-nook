@@ -42,7 +42,7 @@ const PostPage = () => {
 	};
 
 	return (
-		<section className="pt-0 container space-y-6 w-[800px] max-w-full px-6">
+		<section className="container flex flex-col gap-8 w-[700px] max-w-full px-6">
 			<div className="overflow-hidden">
 				<img
 					src={postPictureURL}
@@ -65,11 +65,9 @@ const PostPage = () => {
 				) : null}
 			</div>
 
-			<div>
-				<h2 className="capitalize text-lg font-semibold leading-6">{title}</h2>
-				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-dark">
-					{body}
-				</p>
+			<div className="leading-7 tracking-wide text-primary-dark">
+				<h2 className="capitalize text-2xl font-bold">{title}</h2>
+				<p className="mt-4">{body}</p>
 			</div>
 
 			<div className="flex items-center gap-x-4 text-xs border-b border-primary-border pb-6">

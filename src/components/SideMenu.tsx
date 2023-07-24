@@ -72,7 +72,9 @@ const SideMenu = ({ closeMenu }: PropsType) => {
 									</NavLink>
 								</li> */}
 							<li>
-								<NavLink to="user-posts" className="sidemenu_link w-full">
+								<NavLink to="user-posts" className="sidemenu_link w-full" 
+						onClick={handleClick}
+						>
 									My Posts
 								</NavLink>
 							</li>
@@ -86,6 +88,7 @@ const SideMenu = ({ closeMenu }: PropsType) => {
 						<Link
 							to="/sign-in"
 							className="inline-block btn btn-primary w-full text-center"
+						onClick={handleClick}
 						>
 							Sign in
 						</Link>

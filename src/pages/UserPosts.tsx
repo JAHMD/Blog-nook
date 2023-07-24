@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
+import { PenLine } from "lucide-react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useQuery } from "react-query";
@@ -35,10 +36,11 @@ const UserPosts = () => {
 			<div className="flex justify-between items-center border-b pb-6">
 				<h1 className="page-heading">My posts</h1>
 				<button
-					className="btn btn-primary ml-auto"
+					className="btn btn-primary ml-auto flex items-center gap-2"
 					onClick={() => setIsFormOpen((oldState) => !oldState)}
 				>
-					Write Post
+					<PenLine className="w-5" />
+					Write
 				</button>
 			</div>
 

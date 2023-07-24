@@ -30,7 +30,7 @@ const BlogPostCard = ({ post }: PropsType) => {
 				></span>
 				<img
 					src={postPictureURL}
-					alt={postPictureURL}
+					alt={`${title} image`}
 					loading="lazy"
 					height={286}
 					className="h-[400px] object-cover w-full object-top"
@@ -46,7 +46,7 @@ const BlogPostCard = ({ post }: PropsType) => {
 				</p>
 				<Link
 					to={`/post/${id}`}
-					className="mt-2 group flex items-center gap-2 text-sm font-medium underline w-fit shrink-0 text-emerald-700"
+					className="mt-2 group flex items-center gap-2 text-sm font-medium underline w-fit shrink-0 text-emerald-400"
 				>
 					<p className="">Continue reading</p>
 					<MoveRight className="w-4 group-hover:animate-bounce" />
