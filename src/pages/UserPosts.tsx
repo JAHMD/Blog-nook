@@ -1,14 +1,14 @@
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useQuery } from "react-query";
 import BlogPostCard from "../components/BlogPostCard";
-import Modal from "../components/Modal";
 import NewPost from "../components/NewPost";
 import PagesLoader from "../components/PagesLoader";
 import { getUserData } from "../firebase/firebase";
 
 const UserPosts = () => {
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 	const { user } = useUser();
 
 	const { isLoading, error, data } = useQuery({
@@ -36,16 +36,23 @@ const UserPosts = () => {
 				<h1 className="page-heading">My posts</h1>
 				<button
 					className="btn btn-primary ml-auto"
-					onClick={() => setIsModalOpen((oldState) => !oldState)}
+					onClick={() => setIsFormOpen((oldState) => !oldState)}
 				>
 					Write Post
 				</button>
 			</div>
-			{isModalOpen ? (
-				<Modal closeModal={setIsModalOpen}>
-					<NewPost closeModal={setIsModalOpen} />
-				</Modal>
-			) : null}
+
+			{isFormOpen
+				? createPortal(
+						<div className="p-6 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-dark/60">
+							<div className="form-holder overflow-y-auto rounded-lg">
+								<NewPost closeModal={setIsFormOpen} />
+							</div>
+						</div>,
+						document.body
+				  )
+				: null}
+
 			<div className="flex flex-col gap-4 mt-8">
 				{posts.length > 0 ? (
 					<div className="sm:grid grid-cols-repeat gap-x-8 gap-y-16 mt-16">

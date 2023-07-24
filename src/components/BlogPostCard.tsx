@@ -1,4 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
+import { MoveRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { BlogPostType } from "./NewPost";
 
 type PropsType = {
@@ -36,19 +37,29 @@ const BlogPostCard = ({ post }: PropsType) => {
 				/>
 			</div>
 
-			<NavLink to={`/post/${id}`} state={{ post }} className="mx-4 block group">
-				<h2 className="capitalize line-clamp-1 text-lg font-semibold leading-6 group-hover:text-gray-600 transition-colors">
+			<div className="mx-4 block">
+				<h2 className="capitalize line-clamp-1 text-lg font-semibold leading-6">
 					{title}
 				</h2>
-				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-dark group-hover:text-gray-600 transition-colors">
+				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-text">
 					{body}
 				</p>
-			</NavLink>
+				<Link
+					to={`/post/${id}`}
+					className="mt-2 group flex items-center gap-2 text-sm font-medium underline w-fit shrink-0 text-emerald-700"
+				>
+					<p className="">Continue reading</p>
+					<MoveRight className="w-4 group-hover:animate-bounce" />
+				</Link>
+			</div>
 
 			<div className="mx-4 flex items-center gap-x-4 text-xs border-b border-primary-border pb-6">
-				<p className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize">
+				<Link
+					to={`/categories/${category}`}
+					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize"
+				>
 					{category}
-				</p>
+				</Link>
 				<time dateTime={createdAt} className="text-primary-text">
 					{createdAt}
 				</time>

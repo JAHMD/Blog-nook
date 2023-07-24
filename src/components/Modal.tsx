@@ -26,9 +26,9 @@ const Modal = ({ children, closeModal }: PropsType) => {
 	return createPortal(
 		<div
 			ref={modalRef}
-			className="p-6 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-dark/60"
+			className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-dark/60"
 		>
-			<div className="form-holder overflow-y-auto rounded-lg">{children} </div>
+			{children}
 		</div>,
 		document.body
 	);

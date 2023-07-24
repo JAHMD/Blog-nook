@@ -11,6 +11,18 @@ export default {
 			},
 		},
 		extend: {
+			keyframes: {
+				bounce: {
+					"0%, 100%": {
+						transform: "translateX(25%)",
+						"animation-timing-function": "cubic-bezier(0.8,0,1,1)",
+					},
+					"50%": {
+						transform: "none",
+						"animation-timing-function": "cubic-bezier(0,0,0.2,1)",
+					},
+				},
+			},
 			gridTemplateColumns: {
 				repeat: "repeat(auto-fill, minmax(400px, 1fr))",
 			},
@@ -21,7 +33,7 @@ export default {
 				primary: {
 					light: "#EFFFFA",
 					dark: "#09211C",
-					border: "#B8E0D3",
+					border: "#d8e8e4",
 					text: "#002D1F",
 					category: "#B0FFE4",
 					card: "#FCFFFE",

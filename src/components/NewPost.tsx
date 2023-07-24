@@ -183,7 +183,8 @@ const NewPost = ({ closeModal }: PropsType) => {
 				<button
 					type="button"
 					onClick={() => closeModal(false)}
-					className="btn btn-alt flex-1"
+					className="btn btn-alt flex-1 disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-primary-category"
+					disabled={isSubmitting}
 				>
 					Close
 				</button>

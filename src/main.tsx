@@ -10,6 +10,7 @@ import App from "./App.tsx";
 import "./index.css";
 import BlogPage from "./pages/BlogPage.tsx";
 import CategoriesPage from "./pages/CategoriesPage.tsx";
+import Category from "./pages/Category.tsx";
 import CommentsPage from "./pages/CommentsPage.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -22,7 +23,10 @@ const router = createBrowserRouter(
 		<Route path="/" element={<App />}>
 			<Route index element={<Home />} />
 			<Route path="blog" element={<BlogPage />} />
-			<Route path="categories" element={<CategoriesPage />} />
+			<Route path="categories">
+				<Route index element={<CategoriesPage />} />
+				<Route path=":category" element={<Category />} />
+			</Route>
 			<Route path="comments" element={<CommentsPage />} />
 			<Route path="user-posts" element={<UserPosts />} />
 			<Route path="post">

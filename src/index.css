@@ -58,7 +58,7 @@ form :is(input, textarea) {
 		@apply py-2 px-6 rounded-full;
 	}
 	.btn-primary {
-		@apply bg-primary-dark shadow-md shadow-primary-dark/20 text-primary-light hover:bg-primary-dark/90 transition-colors duration-200 font-semibold;
+		@apply bg-primary-dark shadow-md shadow-primary-dark/20 text-primary-light hover:bg-primary-text/90 transition-colors duration-200 font-semibold;
 	}
 	.btn-alt {
 		@apply bg-primary-category shadow-md shadow-primary-dark/10 text-primary-dark hover:bg-primary-category/80 transition-colors duration-200 font-semibold;
@@ -69,6 +69,12 @@ form :is(input, textarea) {
 	}
 	.link.active {
 		@apply border-b-primary-dark;
+	}
+	.sidemenu_link {
+		@apply p-2 pt-4 transition-colors w-full duration-200 border-primary-dark/10 inline-block border-b-2 hover:border-primary-dark;
+	}
+	.sidemenu_link.active {
+		@apply border-primary-dark;
 	}
 
 	.page-heading {
