@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import BlogPostCard from "../components/BlogPostCard";
-import { BlogPostType } from "../components/NewPost";
 import PagesLoader from "../components/PagesLoader";
 import { getBlogPosts } from "../firebase/firebase";
+import { BlogPostType } from "./NewPost";
 
 const BlogPage = () => {
 	const { status, isFetching, error, data } = useQuery({
-		queryKey: "blog",
+		queryKey: `blog-posts`,
 		queryFn: () => getBlogPosts(),
 	});
 
@@ -32,7 +32,7 @@ const BlogPage = () => {
 			</div>
 
 			{posts?.length > 0 ? (
-				<div className="space-y-8 sm:space-y-0 sm:grid grid-cols-repeat gap-8 mt-16">
+				<div className="grid sm:grid-cols-repeat gap-8 mt-16">
 					{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
 				</div>
 			) : (

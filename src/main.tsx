@@ -13,6 +13,7 @@ import CategoriesPage from "./pages/CategoriesPage.tsx";
 import Category from "./pages/Category.tsx";
 import CommentsPage from "./pages/CommentsPage.tsx";
 import Home from "./pages/Home.tsx";
+import NewPost from "./pages/NewPost.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import PostPage from "./pages/PostPage.tsx";
 import Signin from "./pages/Signin.tsx";
@@ -29,6 +30,8 @@ const router = createBrowserRouter(
 			</Route>
 			<Route path="comments" element={<CommentsPage />} />
 			<Route path="user-posts" element={<UserPosts />} />
+			<Route path="write-post" element={<NewPost />} />
+
 			<Route path="post">
 				<Route path=":id" element={<PostPage />} />
 			</Route>

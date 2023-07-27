@@ -2,8 +2,8 @@ import { ReactNode, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 type PropsType = {
-	children: ReactNode;
-	closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+	children?: ReactNode;
+	closeModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Modal = ({ children, closeModal }: PropsType) => {
@@ -11,7 +11,7 @@ const Modal = ({ children, closeModal }: PropsType) => {
 
 	useEffect(() => {
 		const clickHandler = (e: MouseEvent) => {
-			if (e.target === modalRef.current) {
+			if (e.target === modalRef.current && closeModal) {
 				closeModal(false);
 			}
 		};
@@ -26,7 +26,7 @@ const Modal = ({ children, closeModal }: PropsType) => {
 	return createPortal(
 		<div
 			ref={modalRef}
-			className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-dark/60"
+			className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-dark/80"
 		>
 			{children}
 		</div>,

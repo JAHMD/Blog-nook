@@ -1,6 +1,6 @@
 import { MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { BlogPostType } from "./NewPost";
+import { BlogPostType } from "../pages/NewPost";
 
 type PropsType = {
 	post: BlogPostType;
@@ -21,11 +21,11 @@ const BlogPostCard = ({ post }: PropsType) => {
 	return (
 		<article
 			key={id}
-			className="flex flex-col gap-6 bg-primary-card rounded-lg shadow-md shadow-primary-dark/5"
+			className="flex flex-col gap-4 bg-primary-card rounded-lg shadow-md shadow-primary-dark/5"
 		>
 			<div className="rounded-t-lg overflow-hidden relative">
 				<span
-					className="absolute bottom-0 left-0 h-1/2 bg-gradient-to-t from-primary-dark/80 to-transparent w-full"
+					className="absolute bottom-0 left-0 h-1/2 bg-gradient-to-t from-primary-dark/60 to-transparent w-full"
 					aria-hidden="true"
 				></span>
 				<img
@@ -37,23 +37,16 @@ const BlogPostCard = ({ post }: PropsType) => {
 				/>
 			</div>
 
-			<div className="mx-4 block">
+			<div className="mx-6 block">
 				<h2 className="capitalize line-clamp-1 text-lg font-semibold leading-6">
 					{title}
 				</h2>
 				<p className="mt-2 line-clamp-3 text-sm leading-6 text-primary-text">
 					{body}
 				</p>
-				<Link
-					to={`/post/${id}`}
-					className="mt-2 group flex items-center gap-2 text-sm font-medium underline w-fit shrink-0 text-emerald-400"
-				>
-					<p className="">Continue reading</p>
-					<MoveRight className="w-4 group-hover:animate-bounce" />
-				</Link>
 			</div>
 
-			<div className="mx-4 flex items-center gap-x-4 text-xs border-b border-primary-border pb-6">
+			<div className="mx-6 flex items-center gap-x-4 text-xs border-b border-primary-border pb-4">
 				<Link
 					to={`/categories/${category}`}
 					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize"
@@ -63,6 +56,13 @@ const BlogPostCard = ({ post }: PropsType) => {
 				<time dateTime={createdAt} className="text-primary-text">
 					{createdAt}
 				</time>
+				<Link
+					to={`/post/${id}`}
+					className="ml-auto group flex items-center gap-2 text-xs font-medium underline w-fit shrink-0 text-emerald-400"
+				>
+					<p className="">Continue reading</p>
+					<MoveRight className="w-4 group-hover:animate-bounce" />
+				</Link>
 			</div>
 
 			<div className="mt-auto px-4 pb-4 relative flex items-center gap-x-4 w-fit">

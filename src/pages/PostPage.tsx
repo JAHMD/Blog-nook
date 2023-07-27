@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
-import { BlogPostType } from "../components/NewPost";
 import PagesLoader from "../components/PagesLoader";
 import { getSingleBlogPost } from "../firebase/firebase";
+import { BlogPostType } from "./NewPost";
 
 const PostPage = () => {
 	const { id: paramId } = useParams();
@@ -42,7 +42,7 @@ const PostPage = () => {
 	};
 
 	return (
-		<section className="container flex flex-col gap-8 w-[700px] max-w-full px-6">
+		<section className="container flex flex-col gap-8 w-[700px] max-w-full px-6 pt-0">
 			<div className="overflow-hidden">
 				<img
 					src={postPictureURL}

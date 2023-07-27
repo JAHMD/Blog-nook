@@ -5,12 +5,14 @@ import {
 	getDoc,
 	getDocs,
 	getFirestore,
+	limit,
+	orderBy,
+	query,
 	setDoc,
 	updateDoc,
 } from "firebase/firestore/lite";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
-import { BlogPostType, UserDataType } from "../components/NewPost";
+import { BlogPostType, UserDataType } from "../pages/NewPost";
 
 const firebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
@@ -23,18 +25,31 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // Blog -> getting data --------------------------------------
 export async function getBlogPosts() {
 	const blogCol = collection(db, "blog");
+	const q = query(blogCol, orderBy("id", "desc"));
 	try {
-		const blogSnap = await getDocs(blogCol);
+		const blogSnap = await getDocs(q);
 		if (!blogSnap.empty) {
 			return blogSnap.docs.map((doc) => doc.data());
 		}
 	} catch (err) {
-		if (err instanceof Error) console.log(err.message);
+		if (err instanceof Error) throw new Error(err.message);
+	}
+}
+
+export async function getLatestPosts() {
+	const blogCol = collection(db, "blog");
+	const q = query(blogCol, orderBy("id", "desc"), limit(3));
+	try {
+		const blogSnap = await getDocs(q);
+		if (!blogSnap.empty) {
+			return blogSnap.docs.map((doc) => doc.data());
+		}
+	} catch (err) {
+		if (err instanceof Error) throw new Error(err.message);
 	}
 }
 
@@ -52,6 +67,20 @@ export async function uploadPostToFirebase(post: BlogPostType) {
 	const docRef = doc(db, "blog", id);
 	await setDoc(docRef, post);
 }
+
+// Delete blog post ------------------------------------------
+// export async function deletePost(post: BlogPostType) {
+// 	const { id, userId } = post;
+// 	const postRef = doc(db, "blog", id);
+// 	const userRef = doc(db, "users", userId);
+
+// 	const docSnap = await getDoc(userRef);
+// 	const data = docSnap.data() as UserDataType;
+// 	const updatedPosts = data?.posts.filter((post) => post.id === id);
+
+// 	await deleteDoc(postRef);
+// 	await updateDoc(postRef, { ...data, posts: updatedPosts });
+// }
 
 // Users -> Handlling user data ------------------------------
 export async function uploadUserPosts(
@@ -81,8 +110,8 @@ export async function getUserData(id: string | undefined) {
 }
 
 // images -> upload post picture and return back its url. ----
-export async function handlePictureSetup(pictureFile: Blob, postId: string) {
-	const pictureRef = ref(storage, `images/${pictureFile.name}-${postId}`);
-	await uploadBytes(pictureRef, pictureFile);
-	return await getDownloadURL(pictureRef);
-}
+// export async function handlePictureSetup(pictureFile: Blob, postId: string) {
+// 	const pictureRef = ref(storage, `images/${pictureFile.name}-${postId}`);
+// 	await uploadBytes(pictureRef, pictureFile);
+// 	return await getDownloadURL(pictureRef);
+// }
