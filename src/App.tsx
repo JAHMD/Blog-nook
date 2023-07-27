@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Outlet, useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
@@ -26,7 +27,7 @@ function App() {
 				<main className="relative">
 					<Outlet />
 				</main>
-				<footer></footer>
+				<Footer />
 			</QueryClientProvider>
 		</ClerkProvider>
 	);
