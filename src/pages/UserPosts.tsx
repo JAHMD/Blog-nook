@@ -27,7 +27,7 @@ const UserPosts = () => {
 
 	if (error) {
 		return (
-			<section className="pt-0 container flex items-center justify-center">
+			<section className="pt-0 container flex items-center justify-center min-h-[calc(100vh-90px)]">
 				<p>'An error has occurred: ' + error.message</p>;
 			</section>
 		);
@@ -38,7 +38,7 @@ const UserPosts = () => {
 	return status === "loading" || isFetching ? (
 		<PagesLoader />
 	) : (
-		<section className="container flex flex-col">
+		<section className="container flex flex-col min-h-[calc(100vh-90px)]">
 			<div className="flex justify-between items-center border-b pb-6">
 				<h1 className="page-heading">My posts</h1>
 				<Link

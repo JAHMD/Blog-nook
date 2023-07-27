@@ -49,7 +49,7 @@ const BlogPostCard = ({ post }: PropsType) => {
 			<div className="mx-6 flex items-center gap-x-4 text-xs border-b border-primary-border pb-4">
 				<Link
 					to={`/categories/${category}`}
-					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize"
+					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-dark capitalize"
 				>
 					{category}
 				</Link>

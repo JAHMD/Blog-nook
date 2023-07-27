@@ -34,7 +34,7 @@ export default {
 					light: "#EFFFFA",
 					dark: "#09211C",
 					border: "#d8e8e4",
-					text: "#002D1F",
+					text: "hsl(154, 9%, 40%)",
 					category: "#B0FFE4",
 					card: "#FCFFFE",
 				},

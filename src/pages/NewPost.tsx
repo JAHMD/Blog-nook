@@ -105,7 +105,7 @@ const NewPost = () => {
 	}
 
 	return (
-		<section className="container w-[700px] max-w-full pt-10">
+		<section className="container w-[700px] max-w-full pt-10 min-h-[calc(100vh-90px)]">
 			{isSubmitting ? (
 				<div className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-light/40"></div>
 			) : null}

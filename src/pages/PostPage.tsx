@@ -66,14 +66,14 @@ const PostPage = () => {
 			</div>
 
 			<div className="leading-7 tracking-wide text-primary-dark">
-				<h2 className="capitalize text-2xl font-bold">{title}</h2>
-				<p className="mt-4">{body}</p>
+				<h2 className="capitalize text-2xl  font-bold">{title}</h2>
+				<p className="mt-4 text-primary-text">{body}</p>
 			</div>
 
 			<div className="flex items-center gap-x-4 text-xs border-b border-primary-border pb-6">
 				<Link
 					to={`/categories/${category}`}
-					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-text capitalize hover:bg-primary-category/70 transition-colors"
+					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-dark capitalize hover:bg-primary-category/70 transition-colors"
 				>
 					{category}
 				</Link>
