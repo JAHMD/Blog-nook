@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useUser } from "@clerk/clerk-react";
-import { Image, Loader2 } from "lucide-react";
+import { Loader2, MoveLeft } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { uploadPostToFirebase, uploadUserPosts } from "../firebase/firebase";
@@ -48,21 +48,23 @@ const NewPost = () => {
 		formState: { errors, isSubmitting },
 	} = useForm<Inputs>();
 
+	if (!user) {
+		navigate("/sign-in");
+		return (
+			<section className="pt-0 container flex items-center justify-center">
+				<p>You should sign in first</p>;
+			</section>
+		);
+	}
+
 	const onSubmit: SubmitHandler<Inputs> = async (formData) => {
 		const { body, category, title, picture } = formData;
 		const postId = new Date().getTime().toString();
 
 		// getting picture url
-		const pictureUrl: string | null = await new Promise((resolve) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(picture[0]);
+		const pictureUrl: string | null = await getPictureUrl(picture[0]);
 
-			reader.onloadend = () => {
-				const url = reader.result as string | null;
-				resolve(url);
-			};
-		});
-
+		// setting post info
 		const post: BlogPostType = {
 			id: postId,
 			body,
@@ -77,6 +79,7 @@ const NewPost = () => {
 			createdAt: new Date().toDateString(),
 		};
 
+		// setting user data
 		const userData = {
 			id: user?.id,
 			name: user?.fullName,
@@ -89,22 +92,41 @@ const NewPost = () => {
 		navigate("/user-posts");
 	};
 
+	async function getPictureUrl(file: Blob): Promise<string | null> {
+		return await new Promise((resolve) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+
+			reader.onloadend = () => {
+				const url = reader.result as string | null;
+				resolve(url);
+			};
+		});
+	}
+
 	return (
-		<section className="container w-[700px]">
+		<section className="container w-[700px] max-w-full pt-10">
 			{isSubmitting ? (
-				<div className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-light/30">
-					<Loader2 className="text-primary-dark w-10 h-10 animate-spin" />
-				</div>
+				<div className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-light/40"></div>
 			) : null}
+
+			<Link
+				to="/user-posts"
+				className="font-semibold text-lg pb-2 border-b-2 border-primary-border hover:border-primary-dark transition-colors w-fit flex items-center gap-3"
+			>
+				<MoveLeft />
+				Back
+			</Link>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="p-6 w-full rounded-lg flex flex-col gap-y-6 text-primary-dark"
+				className="mt-16 w-full rounded-lg flex flex-col gap-y-6 text-primary-dark"
 			>
 				<div className="field">
 					<label htmlFor="title" className="block font-medium tracking-wide">
 						Title
 					</label>
 					<input
+						autoFocus={true}
 						id="title"
 						type="text"
 						placeholder="e.g. Cats."
@@ -118,6 +140,7 @@ const NewPost = () => {
 					/>
 					{errors.title ? <p className="err">{errors.title.message}</p> : null}
 				</div>
+
 				<div className="field">
 					<label htmlFor="category" className="block font-medium tracking-wide">
 						Category
@@ -139,6 +162,7 @@ const NewPost = () => {
 						<p className="err">{errors.category.message}</p>
 					) : null}
 				</div>
+
 				<div className="field">
 					<label htmlFor="body" className="block font-medium tracking-wide">
 						Post content
@@ -160,50 +184,35 @@ const NewPost = () => {
 				<div className="field">
 					<label
 						htmlFor="post-image"
-						className="block font-medium tracking-wide"
+						className="block font-medium tracking-wide text-primary-dark"
 					>
 						Image
 					</label>
-					<label
-						htmlFor="post-image"
-						className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary-border border-dashed rounded-lg cursor-pointer bg-primary-card hover:bg-primary-card/60 transition-colors"
-					>
-						<div className="flex flex-col items-center justify-center pt-5 pb-6">
-							<Image className="mx-auto h-8 w-8 stroke-gray-400 mb-4" />
-							<p className="mb-2 text-sm text-gray-500">
-								<span className="font-semibold">Click to upload</span> or drag
-								and drop
-							</p>
-							<p className="text-xs text-gray-500">SVG, PNG, JPG or GIF</p>
-						</div>
-						<input
-							{...register("picture", { required: "Post picture is required" })}
-							id="post-image"
-							type="file"
-							className="hidden"
-							accept=".jpg, .jpeg, .png"
-						/>
-					</label>
+
+					<input
+						type="file"
+						id="post-image"
+						className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:text-primary-dark cursor-pointer file:bg-primary-category transition-colors file:cursor-pointer"
+						accept=".jpg, .jpeg, .png"
+						{...register("picture", { required: "Post picture is required" })}
+					/>
+					<p className="text-sm text-gray-400">SVG, PNG, JPG or GIF.</p>
+
 					{errors.picture ? (
 						<p className="err">{errors.picture.message}</p>
 					) : null}
 				</div>
 
-				<div className="flex gap-6 w-full text-center">
-					<Link to="/user-posts" className="btn btn-alt flex-1">
-						Back
-					</Link>
-					<button
-						className="btn btn-primary flex-1 text-white disabled:bg-gray-600 disabled:cursor-not-allowed"
-						disabled={isSubmitting}
-					>
-						{isSubmitting ? (
-							<Loader2 className="mx-auto animate-spin" />
-						) : (
-							"Submit"
-						)}
-					</button>
-				</div>
+				<button
+					className="btn btn-primary py-3 flex-1 text-white disabled:bg-gray-600 disabled:cursor-not-allowed"
+					disabled={isSubmitting}
+				>
+					{isSubmitting ? (
+						<Loader2 className="mx-auto animate-spin" />
+					) : (
+						"Submit"
+					)}
+				</button>
 			</form>
 		</section>
 	);

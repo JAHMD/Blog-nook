@@ -2,18 +2,28 @@
 import { useUser } from "@clerk/clerk-react";
 import { PenLine } from "lucide-react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import PagesLoader from "../components/PagesLoader";
 import { getUserData } from "../firebase/firebase";
 
 const UserPosts = () => {
 	const { user } = useUser();
+	const navigate = useNavigate();
 
 	const { status, error, data, isFetching } = useQuery({
 		queryKey: user?.id,
 		queryFn: () => getUserData(user?.id),
 	});
+
+	if (!user) {
+		navigate("/sign-in");
+		return (
+			<section className="pt-0 container flex items-center justify-center">
+				<p>You should sign in first</p>;
+			</section>
+		);
+	}
 
 	if (error) {
 		return (

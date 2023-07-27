@@ -13,7 +13,7 @@ section {
 }
 
 form :is(input, textarea) {
-	@apply block tracking-wide w-full rounded-lg p-4 border-2 border-primary-border text-primary-dark bg-primary-card placeholder:text-gray-400 text-sm sm:text-base;
+	@apply block tracking-wide w-full rounded-lg p-4 border-2 border-primary-border text-primary-dark bg-primary-card placeholder:text-gray-400 focus-within:outline-primary-dark/40 transition-colors hover:border-primary-dark/40 text-sm sm:text-base;
 }
 
 .loader {
