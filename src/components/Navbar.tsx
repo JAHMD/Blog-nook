@@ -2,6 +2,7 @@ import { UserButton, useUser } from "@clerk/clerk-react";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../assets/logo/Asset 4.svg";
 import SideMenu from "./SideMenu";
 
 const Navbar = () => {
@@ -10,9 +11,9 @@ const Navbar = () => {
 
 	return (
 		<header className="bg-primary-light/80 sticky top-0 backdrop-blur-sm shadow-md z-10 text-primary-dark font-medium shadow-primary-dark/5">
-			<nav className="flex justify-between items-center container py-6 min-h-20">
+			<nav className="flex justify-between items-center container py-6 min-h-20 gap-4 sm:gap-6">
 				<Link to="/" className="inline-block shrink-0 font-bold text-xl">
-					Blog nook
+					<img src={logo} alt="" className="w-[155px]" />
 				</Link>
 				<button
 					className="md:hidden p-1.5 rounded-md hover:bg-primary-dark hover:text-primary-light  transition-colors"
@@ -22,8 +23,8 @@ const Navbar = () => {
 				</button>
 				{isMenuOpen ? <SideMenu closeMenu={setIsMenuOpen} /> : null}
 
-				<div className="md:flex justify-between w-full hidden">
-					<ul className="mx-auto flex gap-6 items-center">
+				<div className="md:flex gap-6 items-center hidden">
+					<ul className="flex gap-6 items-center">
 						<li>
 							<NavLink to="/" className="link">
 								Home
@@ -40,21 +41,14 @@ const Navbar = () => {
 							</NavLink>
 						</li>
 						{isLoaded && isSignedIn ? (
-							<>
-								{/* <li>
-									<NavLink to="comments" className="link">
-										Comments
-									</NavLink>
-								</li> */}
-								<li>
-									<NavLink to="user-posts" className="link">
-										My Posts
-									</NavLink>
-								</li>
-							</>
+							<li>
+								<NavLink to="user-posts" className="link">
+									My Posts
+								</NavLink>
+							</li>
 						) : null}
 					</ul>
-					<div className="">
+					<div className="flex justify-center">
 						{isLoaded && isSignedIn ? (
 							<UserButton />
 						) : (
