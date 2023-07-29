@@ -27,7 +27,7 @@ export type BlogPostType = {
 	postPictureURL: string;
 	author: string;
 	authorImage: string;
-	userId: string | undefined;
+	userId: string;
 	createdAt: string;
 };
 

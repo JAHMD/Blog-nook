@@ -1,14 +1,21 @@
+import { useUser } from "@clerk/clerk-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Alert from "../components/Alert";
 import Modal from "../components/Modal";
 import PagesLoader from "../components/PagesLoader";
-import { getSingleBlogPost } from "../firebase/firebase";
+import { deletePost, getSingleBlogPost } from "../firebase/firebase";
 import { BlogPostType } from "./NewPost";
 
 const PostPage = () => {
 	const { id: paramId } = useParams();
-	const [isImageClicked, setIsImageClicked] = useState<boolean>(false);
+	const { user } = useUser();
+	const navigate = useNavigate();
+
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [isAlertOprpn, setIsAlertOpen] = useState<boolean>(false);
 
 	const { isLoading, error, data } = useQuery({
 		queryKey: `post-${paramId!}`,
@@ -19,10 +26,10 @@ const PostPage = () => {
 		return <PagesLoader />;
 	}
 
-	if (error) {
+	if (error instanceof Error) {
 		return (
 			<section className="pt-0 flex items-center justify-center">
-				<p>'An error has occurred: ' + error.message</p>;
+				<p>{"An error has occurred: " + error.message}</p>;
 			</section>
 		);
 	}
@@ -35,14 +42,30 @@ const PostPage = () => {
 		createdAt,
 		title,
 		postPictureURL,
+		id,
+		userId,
 	} = data as BlogPostType;
 
-	const handleImageClick = () => {
-		setIsImageClicked(true);
+	const handleDeletePost = () => {
+		void (async () => {
+			setIsDeleting(true);
+			setIsAlertOpen(false);
+			await deletePost(id, userId);
+			setIsDeleting(false);
+			navigate("/user-posts", { replace: true });
+		})();
 	};
 
 	return (
 		<section className="container flex flex-col gap-8 w-[700px] max-w-full px-6 pt-0">
+			{isDeleting ? (
+				<div className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-light/40"></div>
+			) : null}
+			{isAlertOprpn ? (
+				<Modal closeModal={setIsAlertOpen}>
+					<Alert close={setIsAlertOpen} deleteFn={handleDeletePost} />
+				</Modal>
+			) : null}
 			<div className="overflow-hidden">
 				<img
 					src={postPictureURL}
@@ -50,19 +73,7 @@ const PostPage = () => {
 					loading="lazy"
 					height={600}
 					className="w-full cursor-pointer"
-					onClick={handleImageClick}
 				/>
-				{isImageClicked ? (
-					<Modal closeModal={setIsImageClicked}>
-						<img
-							src={postPictureURL}
-							alt={postPictureURL}
-							loading="lazy"
-							className="w-[600px] max-w-full rounded-lg"
-							onClick={handleImageClick}
-						/>
-					</Modal>
-				) : null}
 			</div>
 
 			<div className="leading-7 tracking-wide text-primary-dark">
@@ -70,7 +81,7 @@ const PostPage = () => {
 				<p className="mt-4 text-primary-text">{body}</p>
 			</div>
 
-			<div className="flex items-center gap-x-4 text-xs border-b border-primary-border pb-6">
+			<div className="flex items-center gap-x-4 text-xs sm:text-sm border-b border-primary-border pb-6">
 				<Link
 					to={`/categories/${category}`}
 					className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-dark capitalize hover:bg-primary-category/70 transition-colors"
@@ -80,6 +91,18 @@ const PostPage = () => {
 				<time dateTime={createdAt} className="text-primary-text">
 					{createdAt}
 				</time>
+				{user && user.id === userId ? (
+					<button
+						className="ml-auto justify-center rounded-md bg-red-600 px-4 py-2 shadow-red-600/20 shadow-md font-semibold text-primary-light transition-colors hover:bg-red-500"
+						onClick={() => setIsAlertOpen(true)}
+					>
+						{isDeleting ? (
+							<Loader2 className="mx-auto animate-spin w-10" />
+						) : (
+							"Delete"
+						)}
+					</button>
+				) : null}
 			</div>
 
 			<div className="relative flex items-center gap-x-4">

@@ -15,10 +15,10 @@ const UserPosts = () => {
 		queryFn: () => getUserData(user?.id),
 	});
 
-	if (error) {
+	if (error instanceof Error) {
 		return (
 			<section className="pt-0 container flex items-center justify-center min-h-[calc(100vh-90px)]">
-				<p>'An error has occurred: ' + error.message</p>;
+				<p>{"An error has occurred: " + error.message}</p>;
 			</section>
 		);
 	}
