@@ -69,7 +69,7 @@ const SideMenu = ({ closeMenu }: PropsType) => {
 					{isLoaded && isSignedIn ? (
 						<li>
 							<NavLink
-								to="user-posts"
+								to={`user/${user!.id}`}
 								className="sidemenu_link w-full"
 								onClick={handleClick}
 							>

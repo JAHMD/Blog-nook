@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { Loader2, MessageSquare } from "lucide-react";
+import { Loader2, MessageSquare, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -28,11 +28,7 @@ const PostPage = () => {
 	}
 
 	if (error instanceof Error) {
-		return (
-			<section className="pt-0 flex items-center justify-center">
-				<p>{"An error has occurred: " + error.message}</p>;
-			</section>
-		);
+		throw new Error(error.message);
 	}
 
 	const {
@@ -51,9 +47,11 @@ const PostPage = () => {
 		void (async () => {
 			setIsDeleting(true);
 			setIsAlertOpen(false);
+
 			await deletePost(id, userId);
+
 			setIsDeleting(false);
-			navigate("/user-posts", { replace: true });
+			navigate(`/user/${userId}`, { replace: true });
 		})();
 	};
 
@@ -69,28 +67,27 @@ const PostPage = () => {
 			) : null}
 
 			<div className="flex items-center gap-x-4 justify-between">
-				<div className="flex items-center gap-x-4">
+				<Link
+					to={`/user/${userId}`}
+					className="flex items-center gap-x-4 w-fit"
+				>
 					<img
 						src={authorImage}
 						alt="post's author image"
 						className="h-10 w-10 rounded-full bg-gray-50"
 					/>
-					<div className="leading-6">
-						<p className="font-semibold text-primary-dark">
-							<Link to="/">{author}</Link>
-						</p>
-					</div>
-				</div>
+					<p className="font-semibold text-primary-dark">{author}</p>
+				</Link>
 
 				{user && user.id === userId ? (
 					<button
-						className="justify-center rounded-md text-sm bg-red-600 px-4 py-2 shadow-red-600/20 shadow-md font-semibold text-primary-light transition-colors hover:bg-red-500"
+						className="rounded-md bg-red-600 px-3 py-1.5 shadow-red-600/20 shadow-md font-semibold text-primary-light transition-colors hover:bg-red-500"
 						onClick={() => setIsAlertOpen(true)}
 					>
 						{isDeleting ? (
-							<Loader2 className="mx-auto animate-spin w-10" />
+							<Loader2 className="animate-spin w-5" />
 						) : (
-							"Delete"
+							<Trash2 className="w-5" />
 						)}
 					</button>
 				) : null}
@@ -99,7 +96,7 @@ const PostPage = () => {
 			<div className="overflow-hidden">
 				<img
 					src={postPictureURL}
-					alt={postPictureURL}
+					alt={`${title} image`}
 					loading="lazy"
 					height={600}
 					className="w-full rounded-lg"
@@ -111,9 +108,9 @@ const PostPage = () => {
 				<p className="mt-4 text-primary-text">{body}</p>
 			</div>
 
-			<div className="flex items-center gap-x-4 justify-between text-xs sm:text-sm border-y border-primary-border py-4">
+			<div className="flex items-center gap-x-4 justify-between text-xs sm:text-[13px] border-y border-primary-border py-4">
 				<div className="flex items-center gap-x-4">
-					<p className="rounded-full bg-primary-category text-xs px-3 py-1 font-medium text-primary-dark capitalize">
+					<p className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-dark capitalize">
 						{category}
 					</p>
 					<time dateTime={createdAt} className="text-primary-text">
@@ -121,7 +118,7 @@ const PostPage = () => {
 					</time>
 				</div>
 				<button
-					className="flex items-center gap-2 font-medium capitalize rounded-lg bg-primary-dark/10 hover:bg-primary-dark/20 transition-colors text-primary-text py-2 px-4"
+					className="flex items-center gap-2 font-medium capitalize rounded-lg btn-alt py-2 px-4"
 					onClick={() => setToggleComments((oldState) => !oldState)}
 				>
 					<MessageSquare className="w-4" />

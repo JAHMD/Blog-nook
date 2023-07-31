@@ -15,6 +15,7 @@ const BlogPostCard = ({ post }: PropsType) => {
 		createdAt,
 		id,
 		title,
+		userId,
 		postPictureURL,
 	} = post;
 
@@ -32,12 +33,12 @@ const BlogPostCard = ({ post }: PropsType) => {
 					src={postPictureURL}
 					alt={`${title} image`}
 					loading="lazy"
-					height={286}
-					className="h-[400px] object-cover w-full object-top"
+					height={350}
+					className="h-[350px] object-cover w-full object-top"
 				/>
 			</div>
 
-			<div className="mx-6 block">
+			<div className="mx-4 sm:mx-6 block">
 				<h2 className="capitalize line-clamp-1 text-lg font-semibold leading-6">
 					{title}
 				</h2>
@@ -46,13 +47,10 @@ const BlogPostCard = ({ post }: PropsType) => {
 				</p>
 			</div>
 
-			<div className="mx-6 flex items-center gap-x-4 text-xs border-b border-primary-border pb-4">
-				<Link
-					to={`/categories/${category}`}
-					className="rounded-full bg-primary-category px-3 py-1 font-medium text-primary-dark capitalize"
-				>
+			<div className="mx-4 sm:mx-6 flex items-center gap-x-4 text-xs">
+				<p className="rounded-full bg-primary-category px-3 py-1 font-medium text-primary-dark capitalize">
 					{category}
-				</Link>
+				</p>
 				<time dateTime={createdAt} className="text-primary-text">
 					{createdAt}
 				</time>
@@ -65,20 +63,18 @@ const BlogPostCard = ({ post }: PropsType) => {
 				</Link>
 			</div>
 
-			<div className="mt-auto px-4 pb-4 relative flex items-center gap-x-4 w-fit">
-				<img
-					src={authorImage}
-					alt="post's author image"
-					className="h-10 w-10 rounded-full bg-gray-50"
-				/>
-				<div className="text-sm leading-6">
-					<p className="font-semibold text-gray-900">
-						<Link to="/">
-							<span className="absolute inset-0" />
-							{author}
-						</Link>
-					</p>
-				</div>
+			<div className="mt-auto mx-4 sm:mx-6 py-4 border-t border-primary-border">
+				<Link
+					to={`/user/${userId}`}
+					className="flex items-center gap-x-4 w-fit"
+				>
+					<img
+						src={authorImage}
+						alt="post's author image"
+						className="h-10 w-10 rounded-full bg-gray-50"
+					/>
+					<p className="font-semibold text-sm leading-6">{author}</p>
+				</Link>
 			</div>
 		</article>
 	);

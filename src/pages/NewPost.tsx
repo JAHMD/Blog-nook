@@ -96,7 +96,7 @@ const NewPost = () => {
 
 		await uploadUserPosts(userData, post);
 		await uploadPostToFirebase(post);
-		navigate("/user-posts");
+		navigate("/user");
 	};
 
 	async function getPictureUrl(file: Blob): Promise<string | null> {
@@ -118,7 +118,7 @@ const NewPost = () => {
 			) : null}
 
 			<Link
-				to="/user-posts"
+				to="/user"
 				className="font-semibold text-lg pb-2 border-b-2 border-primary-border hover:border-primary-dark transition-colors w-fit flex items-center gap-3"
 			>
 				<MoveLeft />

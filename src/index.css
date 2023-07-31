@@ -9,59 +9,22 @@ body {
 }
 
 main section {
-	@apply py-12 sm:py-20;
+	@apply py-10 sm:py-20;
 }
 
 form :is(input, textarea) {
 	@apply block tracking-wide w-full rounded-lg p-4 border-2 border-primary-border text-primary-dark bg-primary-card placeholder:text-gray-400 focus-within:outline-primary-dark/40 transition-colors hover:border-primary-dark/40 text-sm sm:text-base;
 }
 
-.loader {
-	display: block;
-	position: relative;
-	height: 40px;
-	width: 100px;
-	box-sizing: border-box;
-	overflow: hidden;
-}
-.loader:before {
-	content: "";
-	position: absolute;
-	left: 0;
-	bottom: 4px;
-	width: 30px;
-	height: 30px;
-	animation: ballbns 1s ease-in infinite;
-}
-
-@keyframes ballbns {
-	0% {
-		left: 0;
-		transform: translateX(-100%) rotate(0deg);
-		border-radius: 0;
-		background: #09211c;
-	}
-	100% {
-		left: 100%;
-		transform: translateX(0%) rotate(360deg);
-		border-radius: 50%;
-		background: #09211c;
-	}
-}
-
-.form-holder::-webkit-scrollbar {
-	display: none;
-}
-
 @layer components {
 	.btn {
-		@apply py-2 px-6 rounded-full;
+		@apply py-3 px-6 rounded-full;
 	}
 	.btn-primary {
 		@apply bg-primary-dark shadow-md shadow-primary-dark/20 text-primary-light hover:bg-primary-dark/90 transition-colors duration-200 font-semibold;
 	}
 	.btn-alt {
-		@apply bg-primary-category shadow-md shadow-primary-dark/10 text-primary-dark hover:bg-primary-category/80 transition-colors duration-200 font-semibold;
+		@apply bg-primary-dark/10 hover:bg-primary-dark/20 text-primary-dark/80 shadow-md shadow-primary-dark/10 text-primary-dark transition-colors duration-200 font-semibold;
 	}
 
 	.link {

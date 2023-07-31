@@ -7,17 +7,13 @@ import { getLatestPosts } from "../firebase/firebase";
 import { BlogPostType } from "./NewPost";
 
 const Home = () => {
-	const { status, isFetching, error, data } = useQuery({
+	const { status, error, data } = useQuery({
 		queryKey: `latest-blog-posts`,
 		queryFn: () => getLatestPosts(),
 	});
 
 	if (error instanceof Error) {
-		return (
-			<section className="pt-0 container flex items-center justify-center">
-				<p>'An error has occurred: ' + {error.message}</p>;
-			</section>
-		);
+		throw new Error(error.message);
 	}
 
 	const posts = (data || []) as BlogPostType[];
@@ -32,10 +28,7 @@ const Home = () => {
 					<p className="mt-4 text-base md:text-xl text-primary-text">
 						Share your thoughts and ideas with the world.
 					</p>
-					<Link
-						to="/sign-in"
-						className="mt-8 inline-block btn btn-primary px-6 py-2.5 rounded-full"
-					>
+					<Link to="/sign-in" className="mt-8 inline-block btn btn-primary">
 						Get Started
 					</Link>
 				</div>
@@ -46,8 +39,8 @@ const Home = () => {
 					Latest blog posts
 				</h1>
 
-				<div className="relative py-16 flex flex-col gap-8">
-					{status === "loading" || isFetching ? (
+				<div className="py-16 flex flex-col gap-8">
+					{status === "loading" ? (
 						<Loader className="mx-auto animate-spin w-8 h-8" />
 					) : posts?.length > 0 ? (
 						<>
@@ -92,10 +85,7 @@ const Home = () => {
 					<h2 className="text-3xl md:text-4xl font-bold mb-4">
 						Join us today and start blogging!
 					</h2>
-					<Link
-						to="/sign-in"
-						className="mt-8 btn-primary px-6 py-2.5 rounded-full inline-block font-bold transition duration-300"
-					>
+					<Link to="/sign-in" className="mt-8 btn-primary inline-block btn">
 						Join Now
 					</Link>
 				</div>

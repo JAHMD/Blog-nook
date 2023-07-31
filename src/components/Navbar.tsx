@@ -6,7 +6,7 @@ import logo from "../assets/logo/Asset 4.svg";
 import SideMenu from "./SideMenu";
 
 const Navbar = () => {
-	const { isSignedIn, isLoaded } = useUser();
+	const { isSignedIn, isLoaded, user } = useUser();
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
 	return (
@@ -42,7 +42,7 @@ const Navbar = () => {
 						</li>
 						{isLoaded && isSignedIn ? (
 							<li>
-								<NavLink to="user-posts" className="link">
+								<NavLink to={`user/${user.id}`} className="link">
 									My Posts
 								</NavLink>
 							</li>
