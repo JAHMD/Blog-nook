@@ -58,7 +58,7 @@ form :is(input, textarea) {
 		@apply py-2 px-6 rounded-full;
 	}
 	.btn-primary {
-		@apply bg-primary-dark shadow-md shadow-primary-dark/20 text-primary-light hover:bg-primary-dark/80 transition-colors duration-200 font-semibold;
+		@apply bg-primary-dark shadow-md shadow-primary-dark/20 text-primary-light hover:bg-primary-dark/90 transition-colors duration-200 font-semibold;
 	}
 	.btn-alt {
 		@apply bg-primary-category shadow-md shadow-primary-dark/10 text-primary-dark hover:bg-primary-category/80 transition-colors duration-200 font-semibold;

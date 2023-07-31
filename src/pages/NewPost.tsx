@@ -19,6 +19,12 @@ type Inputs = {
 	};
 };
 
+type CommentType = {
+	id: string;
+	user: string;
+	comment: string;
+};
+
 export type BlogPostType = {
 	id: string;
 	title: string;
@@ -29,6 +35,7 @@ export type BlogPostType = {
 	authorImage: string;
 	userId: string;
 	createdAt: string;
+	comments: CommentType[];
 };
 
 export type UserDataType = {
@@ -61,7 +68,6 @@ const NewPost = () => {
 		const { body, category, title, picture } = formData;
 		const postId = new Date().getTime().toString();
 
-		// getting picture url
 		const pictureUrl: string | null = await getPictureUrl(picture[0]);
 
 		// setting post info
@@ -77,6 +83,7 @@ const NewPost = () => {
 			authorImage: user?.imageUrl || "",
 			userId: user?.id,
 			createdAt: new Date().toDateString(),
+			comments: [],
 		};
 
 		// setting user data

@@ -82,17 +82,6 @@ export async function deletePost(id: string, userId: string) {
 	await deleteDoc(postRef);
 }
 
-// export async function updateUserPosts(post: BlogPostType) {
-// 	const { id, userId } = post;
-// 	const userRef = doc(db, "users", userId!);
-
-// 	const docSnap = await getDoc(userRef);
-// 	const data = docSnap.data() as UserDataType;
-// 	const updatedPosts = data?.posts.filter((post) => post.id === id);
-
-// 	await updateDoc(userRef, { ...data, posts: updatedPosts });
-// }
-
 // Users -> Handlling user data ------------------------------
 export async function uploadUserPosts(
 	user: UserDataType,

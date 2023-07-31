@@ -45,9 +45,17 @@ const Home = () => {
 					<h1 className="text-2xl sm:text-3xl font-bold border-b-2 border-primary-dark pb-3 mx-auto w-fit">
 						Latest blog posts
 					</h1>
-					<div className="grid sm:grid-cols-repeat gap-8 mt-2">
-						{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
-					</div>
+
+					{posts?.length > 0 ? (
+						<div className="grid sm:grid-cols-repeat gap-8 mt-16">
+							{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
+						</div>
+					) : (
+						<p className="text-3xl text-center my-auto font-bold h-full">
+							No posts yet!
+						</p>
+					)}
+
 					<Link to="blog" className="btn btn-primary mx-auto inline-block">
 						View more
 					</Link>
