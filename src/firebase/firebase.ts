@@ -108,10 +108,3 @@ export async function getUserData(id: string | undefined) {
 		return docSnap.data() as UserDataType;
 	}
 }
-
-// images -> upload post picture and return back its url. ----
-// export async function handlePictureSetup(pictureFile: Blob, postId: string) {
-// 	const pictureRef = ref(storage, `images/${pictureFile.name}-${postId}`);
-// 	await uploadBytes(pictureRef, pictureFile);
-// 	return await getDownloadURL(pictureRef);
-// }

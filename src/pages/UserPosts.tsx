@@ -28,7 +28,7 @@ const UserPosts = () => {
 	return status === "loading" || isFetching ? (
 		<PagesLoader />
 	) : (
-		<section className="container flex flex-col min-h-[calc(100vh-90px)]">
+		<section className="container flex flex-col min-h-[calc(100vh-90px)] py-10">
 			<div className="flex justify-between items-center border-b pb-6">
 				<h1 className="page-heading">My posts</h1>
 				<Link

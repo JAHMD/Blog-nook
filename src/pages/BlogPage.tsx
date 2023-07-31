@@ -23,7 +23,7 @@ const BlogPage = () => {
 	return status === "loading" || isFetching ? (
 		<PagesLoader />
 	) : (
-		<section className="container flex flex-col min-h-[calc(100vh-90px)]">
+		<section className="container flex flex-col">
 			<div className="border-b border-primary-border pb-6">
 				<h1 className="page-heading capitalize">blog posts</h1>
 				<p className="mt-2 text-lg leading-8 text-primary-text">

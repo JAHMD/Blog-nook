@@ -1,8 +1,8 @@
+import { Loader } from "lucide-react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import feature1Img from "../assets/kenny-eliason-3GZNPBLImWc-unsplash.jpg";
 import BlogPostCard from "../components/BlogPostCard";
-import PagesLoader from "../components/PagesLoader";
 import { getLatestPosts } from "../firebase/firebase";
 import { BlogPostType } from "./NewPost";
 
@@ -22,9 +22,7 @@ const Home = () => {
 
 	const posts = (data || []) as BlogPostType[];
 
-	return status === "loading" || isFetching ? (
-		<PagesLoader />
-	) : (
+	return (
 		<>
 			<section className="container pb-16">
 				<div className="border-b border-primary-border pb-10 text-center">
@@ -41,24 +39,32 @@ const Home = () => {
 						Get Started
 					</Link>
 				</div>
-				<div className="pt-12 flex flex-col gap-12">
-					<h1 className="text-2xl sm:text-3xl font-bold border-b-2 border-primary-dark pb-3 mx-auto w-fit">
-						Latest blog posts
-					</h1>
+			</section>
 
-					{posts?.length > 0 ? (
-						<div className="grid sm:grid-cols-repeat gap-8 mt-16">
-							{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
-						</div>
+			<section className="container py-0">
+				<h1 className="text-2xl sm:text-3xl font-bold border-b-2 border-primary-dark pb-3 mx-auto w-fit">
+					Latest blog posts
+				</h1>
+
+				<div className="relative py-16 flex flex-col gap-8">
+					{status === "loading" || isFetching ? (
+						<Loader className="mx-auto animate-spin w-8 h-8" />
+					) : posts?.length > 0 ? (
+						<>
+							<div className="grid sm:grid-cols-repeat gap-8">
+								{posts?.map((post) => (
+									<BlogPostCard key={post.id} post={post} />
+								))}
+							</div>
+							<Link to="blog" className="btn btn-primary mx-auto inline-block">
+								View more
+							</Link>
+						</>
 					) : (
 						<p className="text-3xl text-center my-auto font-bold h-full">
 							No posts yet!
 						</p>
 					)}
-
-					<Link to="blog" className="btn btn-primary mx-auto inline-block">
-						View more
-					</Link>
 				</div>
 			</section>
 
