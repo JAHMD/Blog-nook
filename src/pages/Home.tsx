@@ -28,7 +28,10 @@ const Home = () => {
 					<p className="mt-4 text-base md:text-xl text-primary-text">
 						Share your thoughts and ideas with the world.
 					</p>
-					<Link to="/sign-in" className="mt-8 inline-block btn btn-primary">
+					<Link
+						to="/sign-in"
+						className="mt-8 inline-block btn btn-primary py-2.5"
+					>
 						Get Started
 					</Link>
 				</div>
@@ -85,7 +88,10 @@ const Home = () => {
 					<h2 className="text-3xl md:text-4xl font-bold mb-4">
 						Join us today and start blogging!
 					</h2>
-					<Link to="/sign-in" className="mt-8 btn-primary inline-block btn">
+					<Link
+						to="/sign-in"
+						className="mt-8 btn-primary py-2.5 inline-block btn"
+					>
 						Join Now
 					</Link>
 				</div>

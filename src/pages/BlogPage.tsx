@@ -32,7 +32,7 @@ const BlogPage = () => {
 					{posts?.map((post) => <BlogPostCard key={post.id} post={post} />)}
 				</div>
 			) : (
-				<p className="text-3xl text-center my-auto font-bold h-full">
+				<p className="text-3xl text-center my-auto font-bold h-full py-20">
 					No posts to show
 				</p>
 			)}

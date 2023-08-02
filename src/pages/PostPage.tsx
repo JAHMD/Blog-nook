@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Alert from "../components/Alert";
+import Comments from "../components/Comment";
 import Modal from "../components/Modal";
 import PagesLoader from "../components/PagesLoader";
 import { deletePost, getSingleBlogPost } from "../firebase/firebase";
@@ -14,7 +15,7 @@ const PostPage = () => {
 	const { user } = useUser();
 	const navigate = useNavigate();
 
-	const [toggleComments, setToggleComments] = useState<boolean>(false);
+	const [toggleComments, setToggleComments] = useState<boolean>(true);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [isAlertOprpn, setIsAlertOpen] = useState<boolean>(false);
 
@@ -39,8 +40,9 @@ const PostPage = () => {
 		createdAt,
 		title,
 		postPictureURL,
-		id,
+		id: postId,
 		userId,
+		comments,
 	} = data as BlogPostType;
 
 	const handleDeletePost = () => {
@@ -48,7 +50,7 @@ const PostPage = () => {
 			setIsDeleting(true);
 			setIsAlertOpen(false);
 
-			await deletePost(id, userId);
+			await deletePost(postId, userId);
 
 			setIsDeleting(false);
 			navigate(`/user/${userId}`, { replace: true });
@@ -108,7 +110,7 @@ const PostPage = () => {
 				<p className="mt-4 text-primary-text">{body}</p>
 			</div>
 
-			<div className="flex items-center gap-x-4 justify-between text-xs sm:text-[13px] border-y border-primary-border py-4">
+			<div className="flex items-center flex-wrap gap-x-4 justify-between text-xs sm:text-[13px] border-y border-primary-border py-4">
 				<div className="flex items-center gap-x-4">
 					<p className="rounded-full bg-primary-category px-3 py-1.5 font-medium text-primary-dark capitalize">
 						{category}
@@ -118,29 +120,16 @@ const PostPage = () => {
 					</time>
 				</div>
 				<button
-					className="flex items-center gap-2 font-medium capitalize rounded-lg btn-alt py-2 px-4"
+					className="flex items-center gap-2 font-medium capitalize rounded-lg btn-alt py-1.5 px-3"
 					onClick={() => setToggleComments((oldState) => !oldState)}
 				>
 					<MessageSquare className="w-4" />
 					comments
 				</button>
+				{toggleComments ? (
+					<Comments postId={postId} comments={comments} />
+				) : null}
 			</div>
-			{toggleComments ? (
-				<div className="bg-primary-dark/10 p-6 flex flex-col gap-6 h-[400px] overflow-y-auto">
-					<p className="bg-primary-card rounded-lg p-4">
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores
-						rem, recusandae illo sit sed necessitatibus, repellendus eos
-						eligendi quod consequuntur ab, dolore harum quo pariatur vitae nobis
-						ratione id ut.
-					</p>
-					<p className="bg-primary-card rounded-lg p-4">
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores
-						rem, recusandae illo sit sed necessitatibus, repellendus eos
-						eligendi quod consequuntur ab, dolore harum quo pariatur vitae nobis
-						ratione id ut.
-					</p>
-				</div>
-			) : null}
 		</section>
 	);
 };

@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
+	arrayUnion,
 	collection,
 	deleteDoc,
 	doc,
@@ -13,6 +14,7 @@ import {
 	updateDoc,
 } from "firebase/firestore/lite";
 
+import { CommentType } from "../components/Comment";
 import { BlogPostType, UserDataType } from "../pages/NewPost";
 
 const firebaseConfig = {
@@ -83,28 +85,39 @@ export async function deletePost(id: string, userId: string) {
 }
 
 // Users -> Handlling user data ------------------------------
-export async function uploadUserPosts(
-	user: UserDataType,
-	newPost: BlogPostType
-) {
-	const docRef = doc(db, "users", user.id);
+export async function isUserExists(userId: string) {
+	const docRef = doc(db, "users", userId);
 	const docSnap = await getDoc(docRef);
-
-	if (docSnap.exists()) {
-		const data = docSnap.data() as UserDataType;
-		const updatedPosts = [newPost, ...data.posts];
-		await updateDoc(docRef, { ...data, posts: updatedPosts });
-	} else {
-		await setDoc(docRef, { ...user, posts: [newPost] });
-	}
+	return docSnap.exists();
 }
 
-export async function getUserData(id: string | undefined) {
-	if (!id) return;
+export async function addNewUser(user: UserDataType) {
+	const docRef = doc(db, "users", user.id);
+	await setDoc(docRef, user);
+}
 
+export async function uploadUserPosts(userId: string, newPost: BlogPostType) {
+	const docRef = doc(db, "users", userId);
+	const docSnap = await getDoc(docRef);
+
+	const data = docSnap.data() as UserDataType;
+	const updatedPosts = [newPost, ...data.posts];
+	await updateDoc(docRef, { ...data, posts: updatedPosts });
+}
+
+export async function getUserData(id: string) {
 	const docRef = doc(db, "users", id);
 	const docSnap = await getDoc(docRef);
 	if (docSnap.exists()) {
 		return docSnap.data() as UserDataType;
 	}
+}
+
+// comments: add comment
+export async function addComment(comment: CommentType, postId: string) {
+	const postRef = doc(db, "blog", postId);
+	const userRef = doc(db, "blog", postId);
+
+	await updateDoc(postRef, { comments: arrayUnion(comment) });
+	await updateDoc(userRef, { comments: arrayUnion(comment) });
 }

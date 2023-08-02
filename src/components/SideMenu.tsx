@@ -57,15 +57,6 @@ const SideMenu = ({ closeMenu }: PropsType) => {
 							Blog
 						</NavLink>
 					</li>
-					<li>
-						<NavLink
-							to="categories"
-							className="sidemenu_link"
-							onClick={handleClick}
-						>
-							Categories
-						</NavLink>
-					</li>
 					{isLoaded && isSignedIn ? (
 						<li>
 							<NavLink

@@ -35,11 +35,6 @@ const Navbar = () => {
 								Blog
 							</NavLink>
 						</li>
-						<li>
-							<NavLink to="categories" className="link">
-								Categories
-							</NavLink>
-						</li>
 						{isLoaded && isSignedIn ? (
 							<li>
 								<NavLink to={`user/${user.id}`} className="link">

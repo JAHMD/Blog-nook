@@ -9,9 +9,6 @@ import {
 import App from "./App.tsx";
 import "./index.css";
 import BlogPage from "./pages/BlogPage.tsx";
-import CategoriesPage from "./pages/CategoriesPage.tsx";
-import Category from "./pages/Category.tsx";
-import CommentsPage from "./pages/CommentsPage.tsx";
 import Error from "./pages/Error.tsx";
 import Home from "./pages/Home.tsx";
 import NewPost from "./pages/NewPost.tsx";
@@ -25,13 +22,6 @@ const router = createBrowserRouter(
 		<Route path="/" element={<App />} errorElement={<Error />}>
 			<Route index element={<Home />} />
 			<Route path="blog" element={<BlogPage />} />
-
-			<Route path="categories">
-				<Route index element={<CategoriesPage />} />
-				<Route path=":category" element={<Category />} />
-			</Route>
-
-			<Route path="comments" element={<CommentsPage />} />
 			<Route path="user/:id" element={<UserPosts />} />
 			<Route path="write-post" element={<NewPost />} />
 			<Route path="post/:id" element={<PostPage />} />

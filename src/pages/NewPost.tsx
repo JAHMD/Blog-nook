@@ -2,7 +2,9 @@
 import { useUser } from "@clerk/clerk-react";
 import { Loader2, MoveLeft } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Resizer from "react-image-file-resizer";
 import { Link, useNavigate } from "react-router-dom";
+import { CommentType } from "../components/Comment";
 import { uploadPostToFirebase, uploadUserPosts } from "../firebase/firebase";
 
 export type PictureFileType = {
@@ -17,12 +19,6 @@ type Inputs = {
 	picture: {
 		0: Blob;
 	};
-};
-
-type CommentType = {
-	id: string;
-	user: string;
-	comment: string;
 };
 
 export type BlogPostType = {
@@ -48,6 +44,7 @@ export type UserDataType = {
 const NewPost = () => {
 	const navigate = useNavigate();
 	const { user } = useUser();
+	const userId = user?.id as string;
 
 	const {
 		register,
@@ -55,20 +52,11 @@ const NewPost = () => {
 		formState: { errors, isSubmitting },
 	} = useForm<Inputs>();
 
-	if (!user) {
-		navigate("/sign-in");
-		return (
-			<section className="pt-0 container flex items-center justify-center">
-				<p>You should sign in first</p>;
-			</section>
-		);
-	}
-
 	const onSubmit: SubmitHandler<Inputs> = async (formData) => {
 		const { body, category, title, picture } = formData;
 		const postId = new Date().getTime().toString();
 
-		const pictureUrl: string | null = await getPictureUrl(picture[0]);
+		const pictureUrl = (await resizeFile(picture[0])) as string;
 
 		// setting post info
 		const post: BlogPostType = {
@@ -81,33 +69,30 @@ const NewPost = () => {
 				"https://www.ultimatesource.toys/wp-content/uploads/2013/11/dummy-image-landscape-1-1024x800.jpg",
 			author: user?.fullName || "Unknown user",
 			authorImage: user?.imageUrl || "",
-			userId: user?.id,
+			userId,
 			createdAt: new Date().toDateString(),
 			comments: [],
 		};
 
-		// setting user data
-		const userData = {
-			id: user?.id,
-			name: user?.fullName,
-			imageURL: user?.imageUrl,
-			posts: [],
-		} as UserDataType;
-
-		await uploadUserPosts(userData, post);
+		await uploadUserPosts(userId, post);
 		await uploadPostToFirebase(post);
-		navigate("/user");
+		navigate(`/user/${userId}`);
 	};
 
-	async function getPictureUrl(file: Blob): Promise<string | null> {
-		return await new Promise((resolve) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-
-			reader.onloadend = () => {
-				const url = reader.result as string | null;
-				resolve(url);
-			};
+	function resizeFile(
+		file: Blob
+	): Promise<string | Blob | File | ProgressEvent<FileReader>> {
+		return new Promise((resolve) => {
+			Resizer.imageFileResizer(
+				file,
+				400,
+				300,
+				"JPEG",
+				100,
+				0,
+				(uri) => resolve(uri),
+				"base64"
+			);
 		});
 	}
 
@@ -118,7 +103,7 @@ const NewPost = () => {
 			) : null}
 
 			<Link
-				to="/user"
+				to={`/user/${userId}`}
 				className="font-semibold text-lg pb-2 border-b-2 border-primary-border hover:border-primary-dark transition-colors w-fit flex items-center gap-3"
 			>
 				<MoveLeft />
