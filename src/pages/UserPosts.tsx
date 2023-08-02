@@ -64,7 +64,7 @@ const UserPosts = () => {
 						<h1 className="page-heading">{name}</h1>
 						<Link
 							to="/write-post"
-							className="btn btn-primary ml-auto flex items-center gap-2"
+							className="btn btn-primary ml-auto flex items-center gap-2 mt-2 mx-auto sm:mr-0"
 						>
 							<PenLine className="w-5" />
 							Write
