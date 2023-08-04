@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
+	arrayRemove,
 	arrayUnion,
 	collection,
 	deleteDoc,
@@ -72,16 +73,20 @@ export async function uploadPostToFirebase(post: BlogPostType) {
 }
 
 // Delete blog post ------------------------------------------
-export async function deletePost(id: string, userId: string) {
-	const postRef = doc(db, "blog", id);
+export async function deletePost(userId: string, post: BlogPostType) {
+	const postRef = doc(db, "blog", post.id);
 	const userRef = doc(db, "users", userId);
 
-	const docSnap = await getDoc(userRef);
-	const data = docSnap.data() as UserDataType;
-	const updatedPosts = data?.posts.filter((post) => post.id !== id);
-
-	await updateDoc(userRef, { ...data, posts: updatedPosts });
 	await deleteDoc(postRef);
+	await updateDoc(userRef, { posts: arrayRemove(post) });
+}
+
+export async function deleteComment(userId: string, comment: CommentType) {
+	const postRef = doc(db, "blog", comment.postId);
+	const userRef = doc(db, "users", userId);
+
+	await updateDoc(postRef, { comments: arrayRemove(comment) });
+	await updateDoc(userRef, { comments: arrayRemove(comment) });
 }
 
 // Users -> Handlling user data ------------------------------

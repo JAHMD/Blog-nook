@@ -50,7 +50,7 @@ const PostPage = () => {
 			setIsDeleting(true);
 			setIsAlertOpen(false);
 
-			await deletePost(postId, userId);
+			await deletePost(userId, data as BlogPostType);
 
 			setIsDeleting(false);
 			navigate(`/user/${userId}`, { replace: true });

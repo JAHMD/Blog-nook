@@ -126,7 +126,7 @@ const NewPost = () => {
 							required: { value: true, message: "Title is required" },
 							minLength: {
 								value: 4,
-								message: "It should me at least 4 characters",
+								message: "It should be at least 4 characters",
 							},
 						})}
 					/>
@@ -145,7 +145,7 @@ const NewPost = () => {
 							required: { value: true, message: "Category is required" },
 							minLength: {
 								value: 4,
-								message: "It should me at least 4 characters",
+								message: "It should be at least 4 characters",
 							},
 							maxLength: 40,
 						})}
@@ -166,7 +166,7 @@ const NewPost = () => {
 							required: { value: true, message: "Post content is required" },
 							minLength: {
 								value: 10,
-								message: "It should me at least 10 characters",
+								message: "It should be at least 10 characters",
 							},
 						})}
 					/>

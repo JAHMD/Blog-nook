@@ -1,28 +1,43 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useUser } from "@clerk/clerk-react";
-import { SendHorizonal } from "lucide-react";
+import { MoreHorizontal, SendHorizonal } from "lucide-react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { addComment } from "../firebase/firebase";
+import { addComment, deleteComment } from "../firebase/firebase";
 
 export type CommentType = {
 	userId: string;
 	userName: string;
 	userImg: string;
+	postId: string;
 	comment: string;
 	createdAt: string;
 };
 
-const Comment = ({
-	comment,
-	userId,
-	userName,
-	createdAt,
-	userImg,
-}: CommentType) => {
+type CommentPropsType = {
+	commentInfo: CommentType;
+	setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Comment = ({ commentInfo, setIsDeleting }: CommentPropsType) => {
+	const { user } = useUser();
+	const { comment, userId, userName, createdAt, userImg } = commentInfo;
+
+	const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
+
+	const handleDeleteComment = () => {
+		void (async () => {
+			setIsDeleting(true);
+			await deleteComment(userId, commentInfo);
+			setIsDeleting(false);
+			location.reload();
+		})();
+	};
+
 	return (
 		<div className="bg-primary-card rounded-lg p-4 shadow-md shadow-primary-dark/10 flex-col flex gap-2 text-sm">
-			<div className="flex items-center gap-4">
+			<div className="flex items-center gap-4 relative">
 				<Link to={`/user/${userId}`} className="w-fit flex gap-2 items-center">
 					<img
 						src={userImg}
@@ -34,6 +49,24 @@ const Comment = ({
 				<span className="inline-block text-primary-text text-xs font-normal">
 					{createdAt}
 				</span>
+				{user && user.id === userId ? (
+					<>
+						<button
+							onClick={() => setIsDeleteOpen((oldState) => !oldState)}
+							className="inline-block ml-auto text-primary-text absolute top-0 right-0"
+						>
+							<MoreHorizontal />
+						</button>
+						{isDeleteOpen ? (
+							<button
+								onClick={handleDeleteComment}
+								className="absolute right-0 top-6 btn btn-alt rounded-lg py-2 px-3"
+							>
+								Delete
+							</button>
+						) : null}
+					</>
+				) : null}
 			</div>
 			<p className="leading-5 tracking-wide">{comment}</p>
 		</div>
@@ -52,6 +85,8 @@ type PropsType = {
 const Comments = ({ postId, comments }: PropsType) => {
 	const { user } = useUser();
 
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
 	const {
 		register,
 		handleSubmit,
@@ -68,6 +103,7 @@ const Comments = ({ postId, comments }: PropsType) => {
 			userId,
 			userName,
 			userImg,
+			postId,
 			comment,
 			createdAt: new Date().toLocaleString(),
 		};
@@ -79,7 +115,7 @@ const Comments = ({ postId, comments }: PropsType) => {
 
 	return (
 		<div className="bg-primary-dark/10 px-6 rounded-lg pb-4 flex flex-col gap-4 h-[400px] w-full mt-4">
-			{isSubmitting ? (
+			{isSubmitting || isDeleting ? (
 				<div className="p-10 z-30 fixed top-0 left-0 w-full overflow-hidden h-full grid place-content-center bg-primary-light/40"></div>
 			) : null}
 			<form className="relative py-4" onSubmit={handleSubmit(onSubmit)}>
@@ -87,13 +123,17 @@ const Comments = ({ postId, comments }: PropsType) => {
 					type="text"
 					id="comment"
 					placeholder="What do you think?"
-					className="py-3 placeholder:text-sm"
+					className="py-3 placeholder:text-sm disabled:cursor-not-allowed disabled:opacity-70 disabled:border-none"
+					disabled={!user}
 					{...register("comment", {
 						required: "You have to write something.",
 					})}
 				/>
 
-				<button className="absolute right-4 top-1/2 -translate-y-1/2 text-primary-text hover:text-primary-dark transition-colors">
+				<button
+					disabled={!user}
+					className="absolute right-4 top-1/2 -translate-y-1/2 disabled:hover:text-primary-text disabled:cursor-not-allowed text-primary-text hover:text-primary-dark transition-colors"
+				>
 					<SendHorizonal />
 				</button>
 				{errors.comment ? (
@@ -104,7 +144,11 @@ const Comments = ({ postId, comments }: PropsType) => {
 			</form>
 			<div className="comments overflow-y-auto flex flex-col gap-4 rounded-lg pb-4">
 				{comments.map((comment) => (
-					<Comment key={comment.comment} {...comment} />
+					<Comment
+						key={comment.comment}
+						commentInfo={comment}
+						setIsDeleting={setIsDeleting}
+					/>
 				))}
 			</div>
 		</div>
