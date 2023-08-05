@@ -19,7 +19,7 @@
 
 - Live site URL: [Demo](https://blog-nook.vercel.app/blog)
 
-### technologies
+### Technologies
 
 - [React.js](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
