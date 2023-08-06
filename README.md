@@ -9,11 +9,11 @@
 
 ## Overview
 
-- It is a web-based software or service that allows individuals or businesses to create and publish their own blogs on the internet. These platforms provide the necessary tools and features to manage and present content in a blog format, which typically consists of articles or posts organized in reverse chronological order.
+- It is a web-based software or service that allows individuals or businesses to create and publish their own blogs on the internet. It provides the necessary tools and features to manage and present content in a blog format, which typically consists of articles or posts organized in reverse chronological order.
 
 ### Screenshot
 
-![Design preview](./src/assets/design/screencapture-blog-nook-vercel-app-blog-2023-07-23-18_59_35.png)
+![Design preview](./src/assets/design/design.png)
 
 ## links
 
