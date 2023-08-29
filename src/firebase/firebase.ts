@@ -20,11 +20,11 @@ import { BlogPostType, UserDataType } from "../pages/NewPost";
 
 const firebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
-	authDomain: "blog-nook.firebaseapp.com",
-	projectId: "blog-nook",
-	storageBucket: "blog-nook.appspot.com",
-	messagingSenderId: "417250659878",
-	appId: "1:417250659878:web:64435ffef771203edce0e7",
+	authDomain: "blog-nook-3b41f.firebaseapp.com",
+	projectId: "blog-nook-3b41f",
+	storageBucket: "blog-nook-3b41f.appspot.com",
+	messagingSenderId: "917292609134",
+	appId: "1:917292609134:web:338d3ba18e022a9702c07f",
 };
 
 const app = initializeApp(firebaseConfig);
